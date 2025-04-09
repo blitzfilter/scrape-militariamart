@@ -15,16 +15,17 @@ async fn main() -> Result<(), Box<dyn Error>> {
         currency: Currency::GBP,
     };
 
+    let scrapers: Vec<Box<dyn Scrape>> = vec![Box::new(liverpoolmilitaria)];
+
     let client = Client::new();
-    let items = liverpoolmilitaria.gather(&client, None).await?;
-    let size = items.len();
 
-    for item in items {
-        let json = serde_json::to_string_pretty(&item).unwrap();
-        println!("{}\n", &json);
+    for scraper in scrapers {
+        let items = scraper.gather(&client, None).await;
+        for item in items.unwrap() {
+            let json = serde_json::to_string_pretty(&item).unwrap();
+            println!("{}\n", &json);
+        }
     }
-
-    println!("Size: {}", size);
 
     Ok(())
 }

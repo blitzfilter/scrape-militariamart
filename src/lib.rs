@@ -1,3 +1,4 @@
+use async_trait::async_trait;
 use item::currency::Currency;
 use item::item::ItemDiff;
 use item::itemstate::ItemState;
@@ -12,12 +13,13 @@ pub struct Militariamart {
     pub currency: Currency,
 }
 
+#[async_trait]
 impl Scrape for Militariamart {
     async fn gather_page(
         &self,
         page_num: i16,
         client: &Client,
-    ) -> Result<Vec<ItemDiff>, Box<dyn Error>> {
+    ) -> Result<Vec<ItemDiff>, Box<dyn Error + Send + Sync>> {
         let html = client
             .get(format!(
                 "{}/shop.php?d={}&pg={}",
