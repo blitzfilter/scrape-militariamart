@@ -1,0 +1,22 @@
+[package]
+name = "scrape_militariamart"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+scrape = { git = "https://github.com/blitzfilter/scrape", branch = "main" }
+item = { git = "https://github.com/blitzfilter/item", branch = "main" }
+
+reqwest = { version = "0.12.15", features = ["json"] }
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = { version = "1.0.140" }
+scraper = { version = "0.23.1" }
+
+[lib]
+name = "scrape_militariamart"
+path = "src/lib.rs"
+
+[[bin]]
+name = "scrape_militariamart"
+path = "src/main.rs"
