@@ -1,10 +1,8 @@
-mod lib;
-
-use crate::lib::Militariamart;
 use item::currency::Currency;
 use reqwest::Client;
 use scrape::scrape::Scrape;
 use std::error::Error;
+use scrape_militariamart::Militariamart;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
