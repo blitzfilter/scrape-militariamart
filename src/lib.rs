@@ -6,11 +6,11 @@ use reqwest::Client;
 use scrape::scrape::Scrape;
 use scraper::{ElementRef, Html, Selector};
 use std::error::Error;
+use std::str::FromStr;
 
 pub struct Militariamart {
     pub base_url: String,
     pub shop_dimension: Option<i8>,
-    pub currency: Currency,
 }
 
 #[async_trait]
@@ -36,7 +36,7 @@ impl Scrape for Militariamart {
             .select(&Selector::parse("div.shopitem > div.inner-wrapper").unwrap())
             .map(|shop_item| {
                 let item_id = extract_item_id(shop_item);
-                let price = extract_price(shop_item, self.currency);
+                let price_currency = extract_price_currency(shop_item);
                 ItemDiff {
                     item_id: Some(String::from("TODO")),
                     source_id: Some(String::from("TODO")),
@@ -51,9 +51,9 @@ impl Scrape for Militariamart {
                     description_de: Some(String::from("TODO")),
                     lower_year: None,
                     upper_year: None,
-                    currency: Some(self.currency),
-                    lower_price: price,
-                    upper_price: price,
+                    currency: price_currency.map(|(_, currency)| currency),
+                    lower_price: price_currency.map(|(price, _)| price),
+                    upper_price: price_currency.map(|(price, _)| price),
                     url: item_id.map(|id| format!("{}/shop.php?code={}", &self.base_url, id)),
                     image_url: extract_image_url(shop_item).map(|relative_image_url| {
                         format!("{}/{}", &self.base_url, relative_image_url)
@@ -97,7 +97,7 @@ fn extract_description(shop_item: ElementRef) -> Option<String> {
         .flatten()
 }
 
-fn extract_price(shop_item: ElementRef, currency: Currency) -> Option<f32> {
+fn extract_price_currency(shop_item: ElementRef) -> Option<(f32, Currency)> {
     shop_item
         .select(&Selector::parse("div.block-text > div.actioncontainer > p.price").unwrap())
         .next()
@@ -106,11 +106,20 @@ fn extract_price(shop_item: ElementRef, currency: Currency) -> Option<f32> {
                 .text()
                 .next()
                 .map(|price_text| {
-                    price_text
-                        .replace(&currency.to_string(), "")
-                        .trim()
-                        .parse::<f32>()
-                        .ok()
+                    let mut words = price_text.trim().split_whitespace();
+                    let price = words
+                        .next()
+                        .map(|price_str| price_str.parse::<f32>().ok())
+                        .flatten();
+                    let currency = words
+                        .next()
+                        .map(|currency_str| Currency::from_str(currency_str).ok())
+                        .flatten();
+                    if price.is_some() && currency.is_some() {
+                        Some((price.unwrap(), currency.unwrap()))
+                    } else {
+                        None
+                    }
                 })
                 .flatten()
         })
