@@ -684,7 +684,7 @@ checksum = "469fb0b9cefa57e3ef31275ee7cacb78f2fdca44e4765491884a2b119d4eb130"
 [[package]]
 name = "item"
 version = "0.1.0"
-source = "git+https://github.com/blitzfilter/item?branch=main#3408e05955e780f25c13de384fbd5fb3ecb5101d"
+source = "git+https://github.com/blitzfilter/item?rev=8f36661b417871938b0ead5b792036952e54cfbc#8f36661b417871938b0ead5b792036952e54cfbc"
 dependencies = [
  "blake3",
  "serde",
@@ -1186,11 +1186,14 @@ checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
 [[package]]
 name = "scrape"
 version = "0.1.0"
-source = "git+https://github.com/blitzfilter/scrape?branch=main#b2118b4274682eddbe25c48f7e8e995c027b4025"
+source = "git+https://github.com/blitzfilter/scrape?rev=17d05b8e5e34b1b77a19410477363bcaf73c592f#17d05b8e5e34b1b77a19410477363bcaf73c592f"
 dependencies = [
  "async-trait",
  "item",
  "reqwest",
+ "serde",
+ "strum",
+ "strum_macros",
  "tokio",
 ]
 

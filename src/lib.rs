@@ -1,16 +1,18 @@
 use async_trait::async_trait;
 use item::currency::Currency;
-use item::item::ItemDiff;
 use item::itemstate::ItemState;
 use reqwest::Client;
+use scrape::language::Language;
 use scrape::scrape::Scrape;
 use scraper::{ElementRef, Html, Selector};
 use std::error::Error;
 use std::str::FromStr;
+use item::item::ItemDiff;
 
 pub struct Militariamart {
     pub base_url: String,
     pub shop_dimension: Option<i8>,
+    pub language: Language,
 }
 
 #[async_trait]
@@ -37,18 +39,34 @@ impl Scrape for Militariamart {
             .map(|shop_item| {
                 let item_id = extract_item_id(shop_item);
                 let price_currency = extract_price_currency(shop_item);
+                let name = extract_name(shop_item);
+                let description = extract_description(shop_item);
                 ItemDiff {
-                    item_id: Some(String::from("TODO")),
-                    source_id: Some(String::from("TODO")),
+                    item_id: item_id
+                        .clone()
+                        .map(|id| format!("item#{}#{}", self.base_url, id)),
+                    source_id: Some(self.base_url.clone()),
                     event_id: None,
                     created: None,
                     item_type: None,
                     item_state: extract_state(shop_item),
                     category: None,
-                    name_en: Some(String::from("TODO")),
-                    description_en: Some(String::from("TODO")),
-                    name_de: Some(String::from("TODO")),
-                    description_de: Some(String::from("TODO")),
+                    name_en: match self.language {
+                        Language::EN => name.clone(),
+                        _ => None,
+                    },
+                    description_en: match self.language {
+                        Language::EN => description.clone(),
+                        _ => None,
+                    },
+                    name_de: match self.language {
+                        Language::DE => name,
+                        _ => None,
+                    },
+                    description_de: match self.language {
+                        Language::DE => description,
+                        _ => None,
+                    },
                     lower_year: None,
                     upper_year: None,
                     currency: price_currency.map(|(_, currency)| currency),

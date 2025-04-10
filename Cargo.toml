@@ -4,8 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-scrape = { git = "https://github.com/blitzfilter/scrape", branch = "main"}
-item = { git = "https://github.com/blitzfilter/item", branch = "main" }
+scrape = { git = "https://github.com/blitzfilter/scrape", rev = "17d05b8e5e34b1b77a19410477363bcaf73c592f" }
+item = { git = "https://github.com/blitzfilter/item", rev = "8f36661b417871938b0ead5b792036952e54cfbc" }
 
 reqwest = { version = "0.12.15", features = ["json"] }
 tokio = { version = "1", features = ["full"] }
