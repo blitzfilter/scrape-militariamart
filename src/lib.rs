@@ -1,13 +1,11 @@
 use async_trait::async_trait;
-use item::currency::Currency;
-use item::itemstate::ItemState;
 use reqwest::Client;
 use scrape::language::Language;
 use scrape::scrape::Scrape;
 use scraper::{ElementRef, Html, Selector};
 use std::error::Error;
 use std::str::FromStr;
-use item::item::ItemDiff;
+use scrape::item::{item::ItemDiff, itemstate::ItemState, currency::Currency};
 
 pub struct Militariamart {
     pub base_url: String,

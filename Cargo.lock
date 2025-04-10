@@ -684,7 +684,7 @@ checksum = "469fb0b9cefa57e3ef31275ee7cacb78f2fdca44e4765491884a2b119d4eb130"
 [[package]]
 name = "item"
 version = "0.1.0"
-source = "git+https://github.com/blitzfilter/item?rev=8f36661b417871938b0ead5b792036952e54cfbc#8f36661b417871938b0ead5b792036952e54cfbc"
+source = "git+https://github.com/blitzfilter/item?rev=22dfd03a18525c9fe0e7de0fbcea97cc6c365a7a#22dfd03a18525c9fe0e7de0fbcea97cc6c365a7a"
 dependencies = [
  "blake3",
  "serde",
@@ -1186,7 +1186,7 @@ checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
 [[package]]
 name = "scrape"
 version = "0.1.0"
-source = "git+https://github.com/blitzfilter/scrape?rev=17d05b8e5e34b1b77a19410477363bcaf73c592f#17d05b8e5e34b1b77a19410477363bcaf73c592f"
+source = "git+https://github.com/blitzfilter/scrape?rev=6539089e86dc3ffe2f45d98fc679f95726fa8a3f#6539089e86dc3ffe2f45d98fc679f95726fa8a3f"
 dependencies = [
  "async-trait",
  "item",
@@ -1202,7 +1202,6 @@ name = "scrape_militariamart"
 version = "0.1.0"
 dependencies = [
  "async-trait",
- "item",
  "reqwest",
  "scrape",
  "scraper",
