@@ -1,8 +1,8 @@
 use reqwest::Client;
+use scrape::item_core::language::Language::EN;
 use scrape::scrape::Scrape;
 use scrape_militariamart::Militariamart;
 use std::error::Error;
-use scrape::language::Language;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
@@ -10,7 +10,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let liverpoolmilitaria = Militariamart {
         base_url: "https://liverpoolmilitaria.com".to_string(),
         shop_dimension: None,
-        language: Language::EN,
+        language: EN,
     };
 
     let scrapers: Vec<Box<dyn Scrape>> = vec![Box::new(liverpoolmilitaria)];

@@ -1,11 +1,14 @@
 use async_trait::async_trait;
 use reqwest::Client;
-use scrape::language::Language;
+use scrape::item_core::item_data::ItemData;
+use scrape::item_core::item_state::ItemState;
+use scrape::item_core::language::Language;
+use scrape::item_core::price::{Currency, Price};
 use scrape::scrape::Scrape;
 use scraper::{ElementRef, Html, Selector};
+use std::collections::HashMap;
 use std::error::Error;
 use std::str::FromStr;
-use scrape::item::{item::ItemDiff, itemstate::ItemState, currency::Currency};
 
 pub struct Militariamart {
     pub base_url: String,
@@ -19,7 +22,7 @@ impl Scrape for Militariamart {
         &self,
         page_num: i16,
         client: &Client,
-    ) -> Result<Vec<ItemDiff>, Box<dyn Error + Send + Sync>> {
+    ) -> Result<Vec<ItemData>, Box<dyn Error + Send + Sync>> {
         let html = client
             .get(format!(
                 "{}/shop.php?d={}&pg={}",
@@ -35,42 +38,24 @@ impl Scrape for Militariamart {
         let shop_items = document
             .select(&Selector::parse("div.shopitem > div.inner-wrapper").unwrap())
             .map(|shop_item| {
-                let item_id = extract_item_id(shop_item);
-                let price_currency = extract_price_currency(shop_item);
-                let name = extract_name(shop_item);
-                let description = extract_description(shop_item);
-                ItemDiff {
-                    item_id: item_id
+                let shop_item_id = extract_item_id(shop_item);
+                ItemData {
+                    item_id: shop_item_id
                         .clone()
-                        .map(|id| format!("item#{}#{}", self.base_url, id)),
-                    source_id: Some(self.base_url.clone()),
-                    event_id: None,
+                        .map(|id| format!("{}#{}", self.base_url, id))
+                        .unwrap(),
                     created: None,
-                    item_type: None,
-                    item_state: extract_state(shop_item),
+                    source_id: Some(self.base_url.clone()),
+                    state: extract_state(shop_item),
+                    price: extract_price(shop_item),
                     category: None,
-                    name_en: match self.language {
-                        Language::EN => name.clone(),
-                        _ => None,
-                    },
-                    description_en: match self.language {
-                        Language::EN => description.clone(),
-                        _ => None,
-                    },
-                    name_de: match self.language {
-                        Language::DE => name,
-                        _ => None,
-                    },
-                    description_de: match self.language {
-                        Language::DE => description,
-                        _ => None,
-                    },
-                    lower_year: None,
-                    upper_year: None,
-                    currency: price_currency.map(|(_, currency)| currency),
-                    lower_price: price_currency.map(|(price, _)| price),
-                    upper_price: price_currency.map(|(price, _)| price),
-                    url: item_id.map(|id| format!("{}/shop.php?code={}", &self.base_url, id)),
+                    name: extract_name(shop_item)
+                        .map(|name| HashMap::from([(self.language, name)]))
+                        .unwrap_or_default(),
+                    description: extract_description(shop_item)
+                        .map(|description| HashMap::from([(self.language, description)]))
+                        .unwrap_or_default(),
+                    url: shop_item_id.map(|id| format!("{}/shop.php?code={}", &self.base_url, id)),
                     image_url: extract_image_url(shop_item).map(|relative_image_url| {
                         format!("{}/{}", &self.base_url, relative_image_url)
                     }),
@@ -113,7 +98,7 @@ fn extract_description(shop_item: ElementRef) -> Option<String> {
         .flatten()
 }
 
-fn extract_price_currency(shop_item: ElementRef) -> Option<(f32, Currency)> {
+fn extract_price(shop_item: ElementRef) -> Option<Price> {
     shop_item
         .select(&Selector::parse("div.block-text > div.actioncontainer > p.price").unwrap())
         .next()
@@ -123,7 +108,7 @@ fn extract_price_currency(shop_item: ElementRef) -> Option<(f32, Currency)> {
                 .next()
                 .map(|price_text| {
                     let mut words = price_text.trim().split_whitespace();
-                    let price = words
+                    let amount = words
                         .next()
                         .map(|price_str| price_str.parse::<f32>().ok())
                         .flatten();
@@ -131,8 +116,8 @@ fn extract_price_currency(shop_item: ElementRef) -> Option<(f32, Currency)> {
                         .next()
                         .map(|currency_str| Currency::from_str(currency_str).ok())
                         .flatten();
-                    if price.is_some() && currency.is_some() {
-                        Some((price.unwrap(), currency.unwrap()))
+                    if amount.is_some() && currency.is_some() {
+                        Some(Price::new(currency.unwrap(), amount.unwrap()))
                     } else {
                         None
                     }
