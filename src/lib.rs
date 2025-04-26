@@ -4,10 +4,9 @@ use scrape::item_core::item_data::ItemData;
 use scrape::item_core::item_state::ItemState;
 use scrape::item_core::language::Language;
 use scrape::item_core::price::{Currency, Price};
-use scrape::scrape::Scrape;
+use scrape::scrape::{Scrape, ScrapeError};
 use scraper::{ElementRef, Html, Selector};
 use std::collections::HashMap;
-use std::error::Error;
 use std::str::FromStr;
 
 pub struct Militariamart {
@@ -22,7 +21,7 @@ impl Scrape for Militariamart {
         &self,
         page_num: i16,
         client: &Client,
-    ) -> Result<Vec<ItemData>, Box<dyn Error + Send + Sync>> {
+    ) -> Result<Vec<ItemData>, ScrapeError> {
         let html = client
             .get(format!(
                 "{}/shop.php?d={}&pg={}",
