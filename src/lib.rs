@@ -4,7 +4,7 @@ use scrape::item_core::item_data::ItemData;
 use scrape::item_core::item_state::ItemState;
 use scrape::item_core::language::Language;
 use scrape::item_core::price::{Currency, Price};
-use scrape::scrape::{Scrape, ScrapeError};
+use scrape::scraper::{Scraper, ScrapeError};
 use scraper::{ElementRef, Html, Selector};
 use std::collections::HashMap;
 use std::str::FromStr;
@@ -16,8 +16,8 @@ pub struct Militariamart {
 }
 
 #[async_trait]
-impl Scrape for Militariamart {
-    async fn gather_page(
+impl Scraper for Militariamart {
+    async fn scrape_page(
         &self,
         page_num: i16,
         client: &Client,

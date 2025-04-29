@@ -11,8 +11,9 @@ serde = { version = "1.0.219", features = ["derive"] }
 serde_json = { version = "1.0.140" }
 scraper = { version = "0.23.1" }
 async-trait = "0.1.88"
-aws-config = { version = "1.6.1"}
-aws-sdk-dynamodb = { version = "1.71.1" }
+
+# Currently needed for debugging in main, will be removed
+futures = "0.3.31"
 
 [lib]
 name = "scrape_militariamart"
