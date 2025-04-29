@@ -12,7 +12,7 @@ serde_json = { version = "1.0.140" }
 scraper = { version = "0.23.1" }
 async-trait = "0.1.88"
 aws-config = { version = "1.6.1"}
-aws-sdk-dynamodb = { version = "1.71.1" }
+aws-sdk-dynamodb = { version = "1.72.1" }
 
 [lib]
 name = "scrape_militariamart"
