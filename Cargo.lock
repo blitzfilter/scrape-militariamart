@@ -143,6 +143,29 @@ dependencies = [
 ]
 
 [[package]]
+name = "aws-sdk-dynamodb"
+version = "1.72.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b14d5b5d6849d1caa7b404ea57cbe25ed8ba25c3c7d47f45bcbd5b51e098ceac"
+dependencies = [
+ "aws-credential-types",
+ "aws-runtime",
+ "aws-smithy-async",
+ "aws-smithy-http",
+ "aws-smithy-json",
+ "aws-smithy-runtime",
+ "aws-smithy-runtime-api",
+ "aws-smithy-types",
+ "aws-types",
+ "bytes",
+ "fastrand",
+ "http 0.2.12",
+ "once_cell",
+ "regex-lite",
+ "tracing",
+]
+
+[[package]]
 name = "aws-sdk-sqs"
 version = "1.65.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1321,6 +1344,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "item-read"
+version = "0.1.0"
+source = "git+https://github.com/blitzfilter/item-read?branch=main#429b9827d9468d223e658407c1422675b3b68f55"
+dependencies = [
+ "aws-sdk-dynamodb",
+ "item-core",
+ "serde_dynamo",
+ "tokio",
+]
+
+[[package]]
 name = "itertools"
 version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2052,17 +2086,20 @@ checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
 [[package]]
 name = "scrape"
 version = "0.1.0"
-source = "git+https://github.com/blitzfilter/scrape?branch=main#17fd255bc59c9bcb6ec32c521ac39a20a4f59214"
+source = "git+https://github.com/blitzfilter/scrape?branch=main#f68e64023a01d62b7b2cb6d4795c2d9089356e32"
 dependencies = [
  "async-stream",
  "async-trait",
+ "aws-sdk-dynamodb",
  "aws-sdk-sqs",
  "futures",
  "item-core",
+ "item-read",
  "reqwest",
  "serde",
  "serde_json",
  "tokio",
+ "uuid",
 ]
 
 [[package]]
@@ -2183,6 +2220,17 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "serde_dynamo"
+version = "4.2.14"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e36c1b1792cfd9de29eb373ee6a4b74650369c096f55db7198ceb7b8921d1f7f"
+dependencies = [
+ "aws-sdk-dynamodb",
+ "base64 0.21.7",
+ "serde",
 ]
 
 [[package]]
@@ -2644,6 +2692,9 @@ name = "uuid"
 version = "1.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "458f7a779bf54acc9f347480ac654f68407d3aab21269a6e3c9f922acd9e2da9"
+dependencies = [
+ "getrandom 0.3.2",
+]
 
 [[package]]
 name = "vcpkg"
