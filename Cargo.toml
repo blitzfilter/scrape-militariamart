@@ -7,13 +7,17 @@ edition = "2024"
 scrape = { git = "https://github.com/blitzfilter/scrape", branch = "main" }
 reqwest = { version = "0.12.15", features = ["json"] }
 tokio = { version = "1", features = ["full"] }
-serde = { version = "1.0.219", features = ["derive"] }
-serde_json = { version = "1.0.140" }
 scraper = { version = "0.23.1" }
 async-trait = "0.1.88"
+lambda_runtime = "0.13.0"
+aws-config = "1.6.2"
+aws-sdk-sqs = "1.65.0"
+aws-sdk-dynamodb = "1.72.1"
+tracing-subscriber = { version = "0.3.19", features = ["json"] }
+tracing = "0.1.41"
+dotenvy = "0.15.7"
 
-# Currently needed for debugging in main, will be removed
-futures = "0.3.31"
+[dev-dependencies]
 
 [lib]
 name = "scrape_militariamart"

@@ -1,18 +1,33 @@
+pub mod handler;
+
 use async_trait::async_trait;
 use reqwest::Client;
 use scrape::item_core::item_data::ItemData;
 use scrape::item_core::item_state::ItemState;
 use scrape::item_core::language::Language;
+use scrape::item_core::language::Language::EN;
 use scrape::item_core::price::{Currency, Price};
-use scrape::scraper::{Scraper, ScrapeError};
+use scrape::scraper::{ScrapeError, Scraper};
+use scrape::scraper_config::ScraperConfig;
 use scraper::{ElementRef, Html, Selector};
 use std::collections::HashMap;
 use std::str::FromStr;
 
+#[derive(PartialEq, Debug, Clone)]
 pub struct Militariamart {
     pub base_url: String,
-    pub shop_dimension: Option<i8>,
+    pub shop_dimension: Option<u64>,
     pub language: Language,
+}
+
+impl From<ScraperConfig> for Militariamart {
+    fn from(scraper_config: ScraperConfig) -> Self {
+        Militariamart {
+            base_url: scraper_config.base_url,
+            shop_dimension: scraper_config.shop_dimension,
+            language: scraper_config.language.unwrap_or(EN),
+        }
+    }
 }
 
 #[async_trait]
