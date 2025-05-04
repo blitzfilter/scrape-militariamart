@@ -1,5 +1,5 @@
 [package]
-name = "scrape_militariamart"
+name = "scrape-militariamart"
 version = "0.1.0"
 edition = "2024"
 
@@ -18,11 +18,3 @@ tracing = "0.1.41"
 dotenvy = "0.15.7"
 
 [dev-dependencies]
-
-[lib]
-name = "scrape_militariamart"
-path = "src/lib.rs"
-
-[[bin]]
-name = "scrape_militariamart"
-path = "src/main.rs"
