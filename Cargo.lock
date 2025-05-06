@@ -2341,7 +2341,7 @@ checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
 [[package]]
 name = "scrape"
 version = "0.1.0"
-source = "git+https://github.com/blitzfilter/scrape?branch=main#e693180aa31010abd8ec31d2d86a5e98aab43f40"
+source = "git+https://github.com/blitzfilter/scrape?branch=main#0908305eb6fdd8e07796beedfd9881862112b833"
 dependencies = [
  "async-stream",
  "async-trait",
