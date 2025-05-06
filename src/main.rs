@@ -4,7 +4,6 @@ use scrape::scraper_config::ScraperConfig;
 use scrape_militariamart::function_handler;
 use std::env;
 use tracing::{error, info};
-use tracing_subscriber::fmt::format::FmtSpan;
 
 const ITEM_WRITE_LAMBDA_QUEUE_NAME: &str = "item_write_lambda_queue";
 
@@ -14,7 +13,6 @@ async fn main() -> Result<(), Error> {
         .json()
         .with_max_level(tracing::Level::INFO)
         .with_current_span(true)
-        .with_span_events(FmtSpan::NEW | FmtSpan::CLOSE)
         .with_ansi(false)
         .without_time()
         .init();
