@@ -1,7 +1,7 @@
-pub mod handler;
-
 use async_trait::async_trait;
+use lambda_runtime::LambdaEvent;
 use reqwest::Client;
+use scrape::ScrapePushError;
 use scrape::item_core::item_data::ItemData;
 use scrape::item_core::item_state::ItemState;
 use scrape::item_core::language::Language;
@@ -12,6 +12,23 @@ use scrape::scraper_config::ScraperConfig;
 use scraper::{ElementRef, Html, Selector};
 use std::collections::HashMap;
 use std::str::FromStr;
+
+pub async fn function_handler(
+    event: LambdaEvent<ScraperConfig>,
+    reqwest_client: &Client,
+    sqs_client: &aws_sdk_sqs::Client,
+    dynamodb_client: &aws_sdk_dynamodb::Client,
+    item_write_lambda_q_url: &str,
+) -> Result<(), ScrapePushError> {
+    scrape::default_handler::default_function_handler::<Militariamart>(
+        event,
+        reqwest_client,
+        sqs_client,
+        dynamodb_client,
+        item_write_lambda_q_url,
+    )
+    .await
+}
 
 #[derive(PartialEq, Debug, Clone)]
 pub struct Militariamart {

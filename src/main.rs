@@ -1,8 +1,7 @@
 use aws_config::BehaviorVersion;
 use lambda_runtime::{Error, LambdaEvent, run, service_fn};
 use scrape::scraper_config::ScraperConfig;
-use scrape_militariamart::Militariamart;
-use scrape_militariamart::handler::function_handler;
+use scrape_militariamart::function_handler;
 use std::env;
 use tracing::{error, info};
 use tracing_subscriber::fmt::format::FmtSpan;
@@ -63,7 +62,7 @@ async fn main() -> Result<(), Error> {
 
     run(service_fn(
         move |event: LambdaEvent<ScraperConfig>| async move {
-            function_handler::<Militariamart>(
+            function_handler(
                 event,
                 reqwest_client,
                 sqs_client,
