@@ -1449,7 +1449,7 @@ dependencies = [
 [[package]]
 name = "item-read"
 version = "0.1.0"
-source = "git+https://github.com/blitzfilter/item-read?branch=main#297b531454c4981346c6f7d29e2559325a1d3f09"
+source = "git+https://github.com/blitzfilter/item-read?branch=main#9e39da15f528aef26fe53d505d2016dcd78f2e80"
 dependencies = [
  "aws-sdk-dynamodb",
  "item-core",
@@ -2321,7 +2321,7 @@ checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
 [[package]]
 name = "scrape"
 version = "0.1.0"
-source = "git+https://github.com/blitzfilter/scrape?branch=main#236307c06aea6efdaa0c45a0b9ad85135369b2bb"
+source = "git+https://github.com/blitzfilter/scrape?branch=main#35d94be6a71f11c1f406551bb1c7c5ecba19c8bb"
 dependencies = [
  "async-stream",
  "async-trait",
